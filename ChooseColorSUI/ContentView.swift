@@ -8,17 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
-    enum Field {
-        case red
-        case green
-        case blue
-    }
-    
     @State private var redSliderValue = Double.random(in: 0...255)
     @State private var greenSliderValue = Double.random(in: 0...255)
     @State private var blueSliderValue = Double.random(in: 0...255)
     
-    @FocusState private var focusedField: Field?
+    @State private var isAlertPresented = false
+
     @FocusState private var isFocused: Bool
     
     let formatter: NumberFormatter = {
@@ -52,13 +47,25 @@ struct ContentView: View {
                 
                 VStack(spacing: 20) {
                     TextField("Number", value: $redSliderValue, formatter: formatter)
-                        .focused($focusedField, equals: .red)
+                        //.focused($focusedField, equals: .red)
+                        .focused($isFocused)
                         .keyboardType(.decimalPad)
+                        .toolbar {
+                            ToolbarItemGroup(placement: .keyboard) {
+                                Spacer()
+                                Button("Done") {
+                                    //isFocused = false
+                                    checkNumber(from: redSliderValue)
+                                }.alert("Wrong number", isPresented: $isAlertPresented, actions: { }) {
+                                    Text("Enter correct number (0-255)")
+                                }
+                            }
+                        }
                     TextField("0", value: $greenSliderValue, formatter: formatter)
-                        .focused($focusedField, equals: .green)
+                        .focused($isFocused)
                         .keyboardType(.decimalPad)
                     TextField("0", value: $blueSliderValue, formatter: formatter)
-                        .focused($focusedField, equals: .blue)
+                        .focused($isFocused)
                         .keyboardType(.decimalPad)
                 }
                 .frame(width: 50)
@@ -69,6 +76,19 @@ struct ContentView: View {
 
         .padding()
         .background(.purple)
+        .onTapGesture {
+            isFocused = false
+            checkNumber(from: redSliderValue)
+        }
+    }
+    
+    private func checkNumber(from number: Double) {
+        if number < 0 || number > 255 {
+            print("\(number)")
+            isAlertPresented = true
+        } else {
+            isFocused = false
+        }
     }
 }
 
