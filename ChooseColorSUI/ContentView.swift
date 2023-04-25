@@ -60,13 +60,9 @@ struct ContentView: View {
                     ToolbarItemGroup(placement: .keyboard) {
                         Spacer()
                         Button("Done") {
-                            checkNumber(from: redTFValue) {
+                            checkNumber(from: redTFValue, greenTFValue, blueTFValue) {
                                 redSliderValue = redTFValue
-                            }
-                            checkNumber(from: greenTFValue) {
                                 greenSliderValue = greenTFValue
-                            }
-                            checkNumber(from: blueTFValue) {
                                 blueSliderValue = blueTFValue
                             }
                         }
@@ -83,40 +79,38 @@ struct ContentView: View {
         .padding()
         .background(.indigo)
         .onTapGesture {
-            checkNumber(from: redTFValue) {
+            checkNumber(from: redTFValue, greenTFValue, blueTFValue) {
                 redSliderValue = redTFValue
-            }
-            checkNumber(from: greenTFValue) {
                 greenSliderValue = greenTFValue
-            }
-            checkNumber(from: blueTFValue) {
                 blueSliderValue = blueTFValue
             }
         }
     }
     
-    func checkNumber(from value: Double, completion: () -> Void) {
-        switch value {
-        case redTFValue:
-            if redTFValue > 255 {
-                isAlertPresented.toggle()
-            } else {
-                completion()
-                isFocused = false
-            }
-        case greenTFValue:
-            if greenTFValue > 255 {
-                isAlertPresented.toggle()
-            } else {
-                completion()
-                isFocused = false
-            }
-        default:
-            if blueTFValue > 255 {
-                isAlertPresented.toggle()
-            } else {
-                completion()
-                isFocused = false
+    func checkNumber(from values: Double..., completion: () -> Void) {
+        values.forEach { value in
+            switch value {
+            case redTFValue:
+                if redTFValue > 255 {
+                    isAlertPresented.toggle()
+                } else {
+                    completion()
+                    isFocused = false
+                }
+            case greenTFValue:
+                if greenTFValue > 255 {
+                    isAlertPresented.toggle()
+                } else {
+                    completion()
+                    isFocused = false
+                }
+            default:
+                if blueTFValue > 255 {
+                    isAlertPresented.toggle()
+                } else {
+                    completion()
+                    isFocused = false
+                }
             }
         }
     }
