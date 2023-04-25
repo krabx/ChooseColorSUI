@@ -87,7 +87,7 @@ struct ContentView: View {
         }
     }
     
-    func checkNumber(from values: Double..., completion: () -> Void) {
+    private func checkNumber(from values: Double..., completion: () -> Void) {
         values.forEach { value in
             switch value {
             case redTFValue:
