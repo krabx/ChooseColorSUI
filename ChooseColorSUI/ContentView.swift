@@ -81,7 +81,7 @@ struct ContentView: View {
         }
         
         .padding()
-        .background(.purple)
+        .background(.indigo)
         .onTapGesture {
             checkNumber(from: redTFValue) {
                 redSliderValue = redTFValue
